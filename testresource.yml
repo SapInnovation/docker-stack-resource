@@ -1,9 +1,9 @@
-
 resource_types:
 - name: docker-stack
   type: docker-image
   source:
-    repository: neerajlnm/docker-stack
+    repository: neerajlnm/docker-stacK
+    tag: latest 
 
 resources:
 - name: repo
@@ -20,15 +20,10 @@ jobs:
   serial: true
   plan:
   - get: repo
-  - task: deploy-stack-service
-    config:
-      platform: linux
-      image_resource:
-       type: stack
-      params:
-       stackconfig: repo/docker-stack.yml
-       service_name: sample
-       wait_until_ready: 60
-      volumes:
-       - /var/run/docker.sock:/var/run/docker.sock
-      privileged: true
+  - put: stack 
+    params:
+     stackconfig: repo/docker-stack.yml
+     service_name: sample
+     wait_until_ready: 60
+     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
